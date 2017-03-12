@@ -5,30 +5,43 @@ using System.Web;
 using System.Web.Mvc;
 using Bookkeeping.Models;
 using Bookkeeping.Service;
+using Bookkeeping.Repositories;
 
 namespace Bookkeeping.Controllers
 {
     public class BookkeepingController : Controller
     {
-        private BookkeepingService MoneyBookSvc = new BookkeepingService();
+        private readonly BookkeepingService _MoneyBookSvc;
         
-        // GET: Bookkeeping
-        public ActionResult Index()
+        public BookkeepingController()
         {
-            
-            return View(MoneyBookSvc.GetData());
+            var unitOfWork = new EFUnitOfWork();
+            _MoneyBookSvc = new BookkeepingService(unitOfWork);
         }
 
+        // GET: Bookkeeping
+        public ActionResult Index()
+        {            
+            return View(_MoneyBookSvc.GetBookkeeping());
+        }
+
+        [HttpPost]
+        public ActionResult Index(int Category)
+        {
+            return View(_MoneyBookSvc.QueryCategory(Category).OrderByDescending(x=>x.Date));
+        }
+
+        [HttpGet]
         public ActionResult Create()
         {
-            return View(MoneyBookSvc.GetData());
+            return View(_MoneyBookSvc.GetBookkeeping());
         }
 
         [HttpPost]
         public ActionResult Create(ExpensesRecord data)
         {
-            MoneyBookSvc.AddBookkeeping(data);
-            return View(MoneyBookSvc.GetData().OrderByDescending(x=>x.Date));
+            _MoneyBookSvc.AddBookkeeping(data);
+            return View(_MoneyBookSvc.GetBookkeeping().OrderByDescending(x=>x.Date));
         }
     }
 }
