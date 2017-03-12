@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Bookkeeping.Models.ExpensesRecord>
+
+@Styles.Render("~/Content/ExpensesListCSS.css")
+
+@{
+    int intSerialNo = 0;
+}
+
+@if (!Model.Any() == false)
+{
+    //主要的資料顯示區塊
+    <div id="targetDiv" class="row">
+        <table class="table table-bordered table-hover table-responsive">
+            <tr class="well panel-info">
+                <th class="EL-Table-SerialNo text-center"> @Html.DisplayNameFor(model => model.SerialNo)</th>
+                <th class="EL-Table-Category text-center"> @Html.DisplayNameFor(model => model.Category)</th>
+                <th class="EL-Table-Date text-center"> @Html.DisplayNameFor(model => model.Date)</th>
+                <th class="EL-Table-Money text-center"> @Html.DisplayNameFor(model => model.Money)</th>
+                <th class="EL-Table-memo text-left"> @Html.DisplayNameFor(model => model.memo)</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <th class="EL-Table-SerialNo text-center">@(++intSerialNo)</th>
+                    <th class="EL-Table-Category text-center">@item.Category</th>
+                    <th class="EL-Table-Date text-center">@item.Date.ToShortDateString()</th>
+                    <th class="EL-Table-Money text-center">@String.Format("{0:0,0}", item.Money)</th>
+                    <th class="EL-Table-memo text-left AutoNewLine">@item.memo</th>
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <br />
+    @:無資料
+}

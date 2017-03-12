@@ -1,0 +1,20 @@
+﻿.EL-Table-SerialNo {
+    width: 10%;
+}
+.EL-Table-Category {
+    width: 8%;
+}
+.EL-Table-Date {
+    width: 8%;
+}
+.EL-Table-Money {
+    width: 4%;
+}
+.EL-Table-memo {
+    width: 50%;
+}
+
+.AutoNewLine{
+    word-break: break-all; 
+    word-wrap: break-all;
+}
