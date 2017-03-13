@@ -24,7 +24,7 @@ namespace Bookkeeping.Controllers
         {            
             return View(_MoneyBookSvc.GetBookkeeping());
         }
-
+        
         [HttpPost]
         public ActionResult Index(int Category)
         {

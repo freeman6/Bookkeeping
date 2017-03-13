@@ -30,13 +30,17 @@ namespace Bookkeeping.Service
         /// <returns></returns>
         public IEnumerable<ExpensesRecord> GetBookkeeping()
         {
-            return _AccountBook.GetALL();
+            //return _AccountBook.GetALL();
 
             //暫時用不到了
-            //var MoneyBook = _AccountBook.GetALL();
-            //MoneyBookCache.AddCache(MoneyBook);
-            //return MoneyBookCache.GetCache();
+            var MoneyBook = MoneyBookCache.GetCache();
+            if (MoneyBook.Any() == false)
+            {
+                MoneyBookCache.AddCache(_AccountBook.GetALL());
+            }
+            return MoneyBookCache.GetCache();
         }
+
         /// <summary>
         /// 新增記帳本記錄
         /// </summary>
@@ -51,7 +55,7 @@ namespace Bookkeeping.Service
 
 
             //暫時用不到了
-            //MoneyBookCache.AddCache(GetBookkeeping());
+            MoneyBookCache.AddCache(GetBookkeeping());
             //return MoneyBookCache.GetCache().OrderByDescending(x=>x.Date);
         }
 

@@ -42,8 +42,15 @@ namespace Bookkeeping.Services
             ObjectCache cache = MemoryCache.Default;
             CacheItem cacheContents = cache.GetCacheItem(_CacheName);
 
-            //return cacheContents.Value as IEnumerable<T>;
-            return cacheContents.Value as IEnumerable<T>;
+            if (cacheContents == null)
+            {
+                List<T> tmpData = new List<T>();
+                return tmpData;
+            }
+            else
+            {
+                return cacheContents.Value as IEnumerable<T>;
+            }
 
             #region returnCache
             //if (TargetData == null)
