@@ -44,8 +44,7 @@ namespace Bookkeeping.Services
 
             if (cacheContents == null)
             {
-                List<T> tmpData = new List<T>();
-                return tmpData;
+                return null;
             }
             else
             {

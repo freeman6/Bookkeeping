@@ -6,7 +6,12 @@
     int intSerialNo = 0;
 }
 
-@if (!Model.Any() == false)
+@if (Model.Any() == false)
+{
+    <br />
+    @:無資料
+}
+else
 {
     //分頁的顯示區塊
     <div class="row">
@@ -45,8 +50,8 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <th class="EL-Table-SerialNo text-center">@(@item.SerialNo)</th>
-                    <th class="EL-Table-Category text-center">@(@item.Category == 0 ? "支出" : "收入")</th>
+                    <th class="EL-Table-SerialNo text-center">@(++intSerialNo)</th>
+                    <th class="EL-Table-Category text-center">@(@item.Category == 1 ? "收入" : "支出")</th>
                     <th class="EL-Table-Date text-center">@item.Date.ToShortDateString()</th>
                     <th class="EL-Table-Money text-center">@String.Format("{0:0,0}", item.Money)</th>
                     <th class="EL-Table-memo text-left AutoNewLine">@item.memo</th>
@@ -54,9 +59,4 @@
             }
         </table>
     </div>
-}
-else
-{
-    <br />
-    @:無資料
 }

@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using System.Runtime.Caching;
+using Bookkeeping.Services;
 
 namespace Bookkeeping.Repositories
 {
@@ -11,6 +13,7 @@ namespace Bookkeeping.Repositories
     {
         public IUnitOfWork UnitOfWork { get; set; }
         private DbSet<T> _ObjectSet;
+
         private DbSet<T> ObjectSet
         {
             get

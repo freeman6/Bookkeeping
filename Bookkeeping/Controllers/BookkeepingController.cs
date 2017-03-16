@@ -28,7 +28,7 @@ namespace Bookkeeping.Controllers
         [HttpPost]
         public ActionResult Index(int Category)
         {
-            return View(_MoneyBookSvc.QueryCategory(Category).OrderByDescending(x=>x.Date));
+            return View(_MoneyBookSvc.QueryCategory(Category));
         }
 
         [HttpGet]

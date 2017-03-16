@@ -15,13 +15,13 @@ namespace Bookkeeping.Service
         static string cacheName = "MoneyBook";
         CacheServices<ExpensesRecord> MoneyBookCache = new CacheServices<ExpensesRecord>(cacheName);
 
-        private readonly IRepository<ExpensesRecord> _AccountBook;
+        private readonly IRepository<AccountBook> _AccountBook;
         private readonly IUnitOfWork _unitOfWork;
         
         public BookkeepingService(IUnitOfWork UnitOfWork)
         {
             _unitOfWork = UnitOfWork;
-            _AccountBook = new Repository<ExpensesRecord>(UnitOfWork);
+            _AccountBook = new Repository<AccountBook>(UnitOfWork);
         }
 
         /// <summary>
@@ -30,15 +30,24 @@ namespace Bookkeeping.Service
         /// <returns></returns>
         public IEnumerable<ExpensesRecord> GetBookkeeping()
         {
-            //return _AccountBook.GetALL();
-
-            //暫時用不到了
-            var MoneyBook = MoneyBookCache.GetCache();
-            if (MoneyBook.Any() == false)
+            if (MoneyBookCache.GetCache() == null)
             {
-                MoneyBookCache.AddCache(_AccountBook.GetALL());
+                var source = _AccountBook.GetALL().Select(x => new ExpensesRecord
+                {
+                    Category = x.Categoryyy,
+                    Date = x.Dateee,
+                    Money = x.Amounttt,
+                    memo = x.Remarkkk
+                });
+
+                MoneyBookCache.AddCache(source);
+                return source;
             }
-            return MoneyBookCache.GetCache();
+            else
+            {
+                var source = MoneyBookCache.GetCache();
+                return source;
+            }
         }
 
         /// <summary>
@@ -49,19 +58,32 @@ namespace Bookkeeping.Service
         /// <returns></returns>
         public void AddBookkeeping(ExpensesRecord record)
         {
-            record.SerialNo = Guid.NewGuid();
-            _AccountBook.Create(record);
+            //物件資料移轉
+            AccountBook targetRecord = new AccountBook();
+            targetRecord.Id = Guid.NewGuid();
+            targetRecord.Categoryyy = record.Category;
+            targetRecord.Dateee = record.Date;
+            targetRecord.Amounttt = record.Money;
+            targetRecord.Remarkkk = record.memo;
+
+            _AccountBook.Create(targetRecord);
             _AccountBook.Commit();
 
+            MoneyBookCache.AddCache(_AccountBook.GetALL() as IEnumerable<ExpensesRecord>);
 
-            //暫時用不到了
-            MoneyBookCache.AddCache(GetBookkeeping());
-            //return MoneyBookCache.GetCache().OrderByDescending(x=>x.Date);
         }
 
         public IEnumerable<ExpensesRecord> QueryCategory(int tmpCategory)
         {
-            return _AccountBook.Query(x => x.Category == tmpCategory);
+            var source = _AccountBook.GetALL().Select(x => new ExpensesRecord
+            {
+                Category = x.Categoryyy,
+                Date = x.Dateee,
+                Money = x.Amounttt,
+                memo = x.Remarkkk
+            });
+
+            return source.Where(x => x.Category == tmpCategory);
         }
     }
 }
