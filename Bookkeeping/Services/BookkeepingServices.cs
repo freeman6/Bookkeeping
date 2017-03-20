@@ -62,15 +62,15 @@ namespace Bookkeeping.Service
             AccountBook targetRecord = new AccountBook();
             targetRecord.Id = Guid.NewGuid();
             targetRecord.Categoryyy = record.Category;
-            targetRecord.Dateee = record.Date;
+            targetRecord.Dateee = record.Date == null ? DateTime.Now.Date: record.Date;
             targetRecord.Amounttt = record.Money;
-            targetRecord.Remarkkk = record.memo;
+            targetRecord.Remarkkk = record.memo == null ? "": record.memo;
 
             _AccountBook.Create(targetRecord);
             _AccountBook.Commit();
 
-            MoneyBookCache.AddCache(_AccountBook.GetALL() as IEnumerable<ExpensesRecord>);
-
+            //MoneyBookCache.GetCache().ToList().Add(record);
+            MoneyBookCache.AddCache(record);
         }
 
         public IEnumerable<ExpensesRecord> QueryCategory(int tmpCategory)

@@ -28,19 +28,46 @@ namespace Bookkeeping.Controllers
         [HttpPost]
         public ActionResult Index(int Category)
         {
-            return View(_MoneyBookSvc.QueryCategory(Category));
+            return View("DataList", _MoneyBookSvc.QueryCategory(Category));
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            return View(_MoneyBookSvc.GetBookkeeping());
+            return View();
         }
 
         [HttpPost]
         public ActionResult Create(ExpensesRecord data)
         {
-            _MoneyBookSvc.AddBookkeeping(data);
+            string errMessage = "";
+
+            if (data.Money < 0)
+            {
+                errMessage = "．「金額」資料僅接受正整數<br>";
+            }
+            if (data.Date > DateTime.Now.Date)
+            {
+                errMessage = errMessage + $"．「日期」資料不能超過今日{DateTime.Now.ToShortDateString()}<br>";
+            }
+            if (data.memo.Length>100)
+            {
+                errMessage = errMessage + "．「備註」資料僅接受100字元";
+            }
+            
+            if (errMessage.Length == 0)
+            {
+                _MoneyBookSvc.AddBookkeeping(data);
+                return View("DataList", _MoneyBookSvc.GetBookkeeping().OrderByDescending(x => x.Date));
+            }
+            else
+            {
+                return Content(errMessage);
+            }
+        }
+
+        public ActionResult DataList()
+        {
             return View(_MoneyBookSvc.GetBookkeeping().OrderByDescending(x=>x.Date));
         }
     }

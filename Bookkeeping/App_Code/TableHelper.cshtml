@@ -1,0 +1,20 @@
+﻿
+@helper DisplayTableItem(Bookkeeping.Models.ExpensesRecord item, int intSerialNo)
+{
+    if (item.Category == 0)
+    {
+            <th class="EL-Table-SerialNo text-center text-danger">@intSerialNo</th>
+                <th class="EL-Table-Category text-center text-danger">@(@item.Category == 1 ? "收入" : "支出")</th>
+                <th class="EL-Table-Date text-center text-danger">@item.Date.ToShortDateString()</th>
+                <th class="EL-Table-Money text-center text-danger">@String.Format("{0:0,0}", item.Money)</th>
+                <th class="EL-Table-memo text-left text-danger AutoNewLine">@item.memo</th>
+    }
+    else
+    {
+            <th class="EL-Table-SerialNo text-center text-primary">@intSerialNo</th>
+                <th class="EL-Table-Category text-center text-primary">@(@item.Category == 1 ? "收入" : "支出")</th>
+                <th class="EL-Table-Date text-center text-primary">@item.Date.ToShortDateString()</th>
+                <th class="EL-Table-Money text-center text-primary">@String.Format("{0:0,0}", item.Money)</th>
+                <th class="EL-Table-memo text-left text-primary AutoNewLine">@item.memo</th>
+    }
+}
