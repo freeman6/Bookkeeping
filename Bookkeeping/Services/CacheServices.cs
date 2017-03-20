@@ -31,6 +31,16 @@ namespace Bookkeeping.Services
             policy.AbsoluteExpiration = DateTime.Now.AddMinutes(intExpireMinute);
             cache.Add(_CacheName, source, policy);
         }
+        public void AddCache(T source)
+        {
+            ObjectCache cache = MemoryCache.Default;
+            CacheItemPolicy policy = new CacheItemPolicy();
+            CacheItem cacheContents = cache.GetCacheItem(_CacheName);
+
+            policy.AbsoluteExpiration = DateTime.Now.AddMinutes(intExpireMinute);
+            var tmpItem = cacheContents.Value as IEnumerable<T>;
+            tmpItem.ToList().Add(source);
+        }
 
         /// <summary>
         /// 從Cache讀出資料

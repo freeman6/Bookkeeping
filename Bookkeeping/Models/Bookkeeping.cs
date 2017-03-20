@@ -8,21 +8,22 @@ using System.Web;
 
 namespace Bookkeeping.Models
 {
+    
     public partial class ExpensesRecord
     {
-        [DisplayName("序號")]
+        [Display(Name = "序號")]
         public int SerialNo { get; set; }
 
-        [DisplayName("費用類別")]
+        [Display(Name = "費用類別")]
         public int Category { get; set; }
 
-        [DisplayName("費用日期")]
+        [Display(Name = "費用日期")]
         public DateTime Date { get; set; }
 
-        [DisplayName("金額")]
+        [Display(Name = "金額")]
         public int Money { get; set; }
 
-        [DisplayName("說明")]
+        [Display(Name = "說明")]
         public string memo { get; set; }
     }
 }
