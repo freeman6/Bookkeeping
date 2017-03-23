@@ -21,9 +21,11 @@ namespace Bookkeeping.Models
         public DateTime Date { get; set; }
 
         [Display(Name = "金額")]
+        [Range(100,int.MaxValue)]
         public int Money { get; set; }
 
         [Display(Name = "說明")]
+        [Required]
         public string memo { get; set; }
     }
 }
