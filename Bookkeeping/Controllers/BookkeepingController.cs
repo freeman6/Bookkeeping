@@ -38,8 +38,21 @@ namespace Bookkeeping.Controllers
         }
 
         [HttpPost]
+        public ActionResult CreateAjax(ExpensesRecord data)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = new AjaxReturnViewModel() { IsSuccess=true,Goto= Url.Action("DataList") };
+                return Json(result);
+            }
+            return PartialView("_CreateForm",data);
+
+        }
+
+        [HttpPost]
         public ActionResult Create(ExpensesRecord data)
         {
+
             string errMessage = "";
 
             if (data.Money < 0)
@@ -50,11 +63,11 @@ namespace Bookkeeping.Controllers
             {
                 errMessage = errMessage + $"．「日期」資料不能超過今日{DateTime.Now.ToShortDateString()}<br>";
             }
-            if (data.memo.Length>100)
+            if (data.memo.Length > 100)
             {
                 errMessage = errMessage + "．「備註」資料僅接受100字元";
             }
-            
+
             if (errMessage.Length == 0)
             {
                 _MoneyBookSvc.AddBookkeeping(data);
@@ -70,5 +83,6 @@ namespace Bookkeeping.Controllers
         {
             return View(_MoneyBookSvc.GetBookkeeping().OrderByDescending(x=>x.Date));
         }
+
     }
 }
