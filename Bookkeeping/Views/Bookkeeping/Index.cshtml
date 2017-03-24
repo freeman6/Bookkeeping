@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Bookkeeping.Models.ExpensesRecord>
 
 <br />
-@using (Ajax.BeginForm(new AjaxOptions { UpdateTargetId = "targetDiv", Url = Url.Action("Index") }))
+@using (Html.BeginForm(new AjaxOptions { UpdateTargetId = "targetDiv", Url = Url.Action("Index") }))
 {
     <div class="container">
         <div class="row">
