@@ -2,54 +2,13 @@
 
 <br />
 
-@using (Ajax.BeginForm("Create", new AjaxOptions { UpdateTargetId = "targetDiv" }))
+@using (Ajax.BeginForm("Create", new AjaxOptions
 {
-    <div class="container">
-        <div class="row">
-            <div class="well">
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label for="Category" class="col-sm-2 col-md-1 col-lg-1 control-label">類別</label>
-                        <div class="col-sm-10 col-md-2 col-lg-2">
-                            <select name="Category" class="form-control">
-                                <option value="" selected>請選擇</option>
-                                <option value="0">支出</option>
-                                <option value="1">收入</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Money" class="col-sm-2 col-md-1 col-lg-1 control-label">金額</label>
-                        <div class="col-sm-10 col-md-10 col-lg-10">
-                            @*<input type="date" class="form-control" name="Money" placeholder="金額">*@
-                            @Html.EditorFor(x => x.Money, new { @class = "form-control", @placeholder = "金額" })
-                            @Html.ValidationMessageFor(x => x.Money, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Date" class="col-sm-2 col-md-1 col-lg-1 control-label">日期</label>
-                        <div class="col-sm-10">
-                            <input type="date" class="form-control" name="Date" placeholder="日期">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 col-md-1 col-lg-1 control-label">備註</label>
-                        <div class="col-sm-10">
-                            @*<textarea class="form-control" name="memo"></textarea>*@   
-                            @Html.TextAreaFor(x => x.memo, new { @class = "form-control", @rows = 4, @placeholder = "備註" })
-                            @*@Html.ValidationMessageFor(x => x.memo, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-1 col-md-1 col-lg-1 col-md-offset-1">
-                            <button type="submit" class="btn btn-default">送　出</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    UpdateTargetId = "targetDiv",Url=Url.Action("CreateAjax"),OnSuccess = "ajaxSuccess"
+}))
+{
+    <div class="container" Id="targetDiv">
+        @Html.Partial("_CreateForm")
     </div>
 }
 <div>
@@ -60,3 +19,13 @@
 
 @Html.Action("DataList")
 
+@section scripts{
+    <script>
+        function ajaxSuccess(evt, request, settings) {
+            if (evt.IsSuccess === true) {
+                alert(evt.Goto);
+                window.history.go(evt.Goto);
+            }
+        }
+    </script>
+}

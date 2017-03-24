@@ -38,42 +38,51 @@ namespace Bookkeeping.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ExpensesRecord data)
+        public ActionResult CreateAjax(ExpensesRecord data)
         {
             if (ModelState.IsValid)
             {
-                
+                var result = new AjaxReturnViewModel() { IsSuccess=true,Goto= Url.Action("DataList") };
+                return Json(result);
             }
-            return View(data);
-            //string errMessage = "";
+            return PartialView("_CreateForm",data);
 
-            //if (data.Money < 0)
-            //{
-            //    errMessage = "．「金額」資料僅接受正整數<br>";
-            //}
-            //if (data.Date > DateTime.Now.Date)
-            //{
-            //    errMessage = errMessage + $"．「日期」資料不能超過今日{DateTime.Now.ToShortDateString()}<br>";
-            //}
-            //if (data.memo.Length>100)
-            //{
-            //    errMessage = errMessage + "．「備註」資料僅接受100字元";
-            //}
+        }
 
-            //if (errMessage.Length == 0)
-            //{
-            //    _MoneyBookSvc.AddBookkeeping(data);
-            //    return View("DataList", _MoneyBookSvc.GetBookkeeping().OrderByDescending(x => x.Date));
-            //}
-            //else
-            //{
-            //    return Content(errMessage);
-            //}
+        [HttpPost]
+        public ActionResult Create(ExpensesRecord data)
+        {
+
+            string errMessage = "";
+
+            if (data.Money < 0)
+            {
+                errMessage = "．「金額」資料僅接受正整數<br>";
+            }
+            if (data.Date > DateTime.Now.Date)
+            {
+                errMessage = errMessage + $"．「日期」資料不能超過今日{DateTime.Now.ToShortDateString()}<br>";
+            }
+            if (data.memo.Length > 100)
+            {
+                errMessage = errMessage + "．「備註」資料僅接受100字元";
+            }
+
+            if (errMessage.Length == 0)
+            {
+                _MoneyBookSvc.AddBookkeeping(data);
+                return View("DataList", _MoneyBookSvc.GetBookkeeping().OrderByDescending(x => x.Date));
+            }
+            else
+            {
+                return Content(errMessage);
+            }
         }
 
         public ActionResult DataList()
         {
             return View(_MoneyBookSvc.GetBookkeeping().OrderByDescending(x=>x.Date));
         }
+
     }
 }

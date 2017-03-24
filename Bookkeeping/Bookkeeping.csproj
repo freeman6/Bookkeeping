@@ -180,6 +180,7 @@
     </Compile>
     <Compile Include="Models\AccountBook.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AjaxReturnViewModel.cs" />
     <Compile Include="Models\Bookkeeping.cs" />
     <Compile Include="Models\DBModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -279,6 +280,7 @@
     <Content Include="Views\Bookkeeping\Create.cshtml" />
     <Content Include="Views\Shared\_ExpensesList.cshtml" />
     <Content Include="Views\Bookkeeping\DataList.cshtml" />
+    <Content Include="Views\Bookkeeping\_CreateForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
