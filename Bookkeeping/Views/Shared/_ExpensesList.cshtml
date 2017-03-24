@@ -18,7 +18,7 @@ else
     <div id="targetDiv" class="row">
         <table class="table table-bordered table-hover table-responsive">
             <tr class="well panel-info">
-                <th class="EL-Table-SerialNo text-center"> @Html.DisplayNameFor(model => model.SerialNo)</th>
+                <th class="EL-Table-SerialNo text-center">#</th>
                 <th class="EL-Table-Category text-center"> @Html.DisplayNameFor(model => model.Category)</th>
                 <th class="EL-Table-Date text-center"> @Html.DisplayNameFor(model => model.Date)</th>
                 <th class="EL-Table-Money text-center"> @Html.DisplayNameFor(model => model.Money)</th>
@@ -27,9 +27,7 @@ else
 
             @foreach (var item in Model)
             {
-                <tr>
-                    @TableHelper.DisplayTableItem(item, ++intSerialNo)
-                </tr>
+                @TableHelper.DisplayTableItem(item, ++intSerialNo)
             }
         </table>
     </div>
